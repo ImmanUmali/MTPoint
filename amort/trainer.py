@@ -292,6 +292,10 @@ class Trainer(ABC):
         n_sample, 
         infer_type
     ):
+        if self.user_dataset.n_user == 0:
+            print("- user simulation skipped: no experiment data available")
+            return
+
         inferred_param = list()
         merged_result = list()
         exp_result = list()

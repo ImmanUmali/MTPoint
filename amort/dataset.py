@@ -21,11 +21,18 @@ class UserDataset(object):
     def __init__(self, config=None):
         config = deepcopy(mta_dd_config["simulator"]) if config is None else config
         self.targeted_stat = config["targeted_y"]
-        
-        self.dataset = [pd.read_csv(f"{PATH_EXP_DATA}/P_{i}_results.csv") for i in range(1, 22)]
-        self.n_user = 21
+
+        data_paths = [f"{PATH_EXP_DATA}/P_{i}_results.csv" for i in range(1, 22)]
+        missing_paths = [path for path in data_paths if not os.path.exists(path)]
+        if missing_paths:
+            self.dataset = []
+            self.n_user = 0
+            print("[ user dataset ] experiment data not found; user-data validation disabled")
+        else:
+            self.dataset = [pd.read_csv(path) for path in data_paths]
+            self.n_user = len(self.dataset)
+            print(f"[ user dataset ] {self.n_user} loaded")
         self.stat_range = np.vstack([stat_range[v] for v in self.targeted_stat])
-        print(f"[ user dataset ] 21 loaded")
     
     def sample(self, n_user, shuffle=True):
         data = self.dataset[n_user]

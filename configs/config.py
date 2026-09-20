@@ -1,12 +1,25 @@
 import numpy as np
 
 param_range = {
+    # Paper c_t: temporal-structure/internal-clock noise coefficient.
+    # Project c2 is used in sigma_t = c2 * P.
     "c2": [0.01, 0.2],
+    # Paper c_v1: asymptotic precision limit of the visual cue.
+    # Project c3 is the additive term in the visual-cue variance.
     "c3": [0.01, 0.1],
+    # Paper c_v2: visual encoding rate.
+    # Project c4 controls the exponential decay of visual-cue variance.
     "c4": [5, 50],
+    # Paper nu_on: drift rate for the lane containing the target.
     "nu_c": [0.2, 0.7],
+    # Paper nu_0: baseline drift rate for lanes without the target.
+    # The project computes nu_off = nu_e / log2(N).
     "nu_e": [0.01, 0.4],
+    # Paper omega: reward weight assigned to timing accuracy.
+    # The project combines timing penalty and decision penalty using Wa.
     "Wa": [0.001, 1.0],
+    # Paper t_b (Ter): non-decision/button-press time in the same time units
+    # as t_c, P, and the simulated input timing.
     "Ter": [0.0,0.2]#,
     #"Negative_w" : [0.0, 5],
     #"Positive_w" : [0.0, 5]
@@ -27,11 +40,18 @@ param_symbol = {
 }
 
 stat_range = {
+    # Paper ER (lane-recognition error rate) is represented by its complement:
+    # dd_acc = correct-lane accuracy = 1 - ER.
     "dd_acc": [0.0 , 1],
+    # Paper mu: mean button-input timing relative to target acquisition.
     "mta_mean": [-0.6, 0.6],
+    # Paper sigma: standard deviation of button-input timing.
     "mta_std": [0, 0.6],
+    # Paper t_c: cue-viewing time.
     "t_cue": [0.05, 0.6],
+    # Paper P: target respawn/input period.
     "P": [1.25, 1.8],
+    # Paper N: number of lanes.
     "N": [1, 4]
 }
 
