@@ -16,7 +16,7 @@ from configs.path import *
 from utils.utils import *
 from utils.mymath import *
 
-
+# used for recorded data
 class UserDataset(object):
     def __init__(self, config=None):
         config = deepcopy(mta_dd_config["simulator"]) if config is None else config
@@ -98,6 +98,7 @@ class TrainDataset(object):
     def _generate_dataset(self, total_param=2**23, save_param=2**21, num_cpu=12):
         """Generate simulation dataset"""
         self.simulator = Simulator(self.sim_config)
+        os.makedirs(PATH_AMORT_SIM_DATASET, exist_ok=True)
 
         save_freq = int(np.ceil(total_param / save_param))
 
@@ -182,6 +183,7 @@ class ValidDataset(object):
 
     def _generate_dataset(self, num_cpu=12):
         self.simulator = Simulator(self.sim_config)
+        os.makedirs(PATH_AMORT_SIM_DATASET, exist_ok=True)
 
         def get_simul_res(simulator, i):
             np.random.seed(datetime.now().microsecond + i)

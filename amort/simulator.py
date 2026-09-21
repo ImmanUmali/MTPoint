@@ -41,12 +41,12 @@ class Simulator(object):
         - sim_per_param: no. of simulation per parameter set
         =======
         Free params in MMTA model
-        1) c2   (min=0.01, max=0.3)
-        2) c3   (min=0.01, max=0.1)
-        3) c4   (min=5, max=50)
+        1) c2   (min=0.01, max=0.3)    c_t - precision of internal clock 
+        2) c3   (min=0.01, max=0.1)    c_v1 - visual encoding precision limit
+        3) c4   (min=5, max=50)        c_v2 - visual encoding rate
         4) nu_c (min=0.2, max=0.8)      Correct drift rate
         5) nu_e (min=0.0, max=0.8)      Error drift rate
-        6) Wa   (min=0.0, max=10.0)      Anticipation Weight
+        6) Wa   (min=0.0, max=10.0)     Anticipation Weight
         7) Ter  (min=0.0, max=0.3)      Non-Decision Time
         8) Negative_w   (min=0.0, max=5)        
         9) Positive_w   (min=0.0, max=5)

@@ -28,6 +28,14 @@ parser.add_argument('--batch_sz', type=int, default=128)
 parser.add_argument('--n_iter', type=int, default=100)
 parser.add_argument('--save_freq', type=int, default=10)
 
+# Small simulated datasets keep a proof-of-concept run self-contained.
+parser.add_argument('--n_ep', type=int, default=5)
+parser.add_argument('--train_exp', type=int, default=8)
+parser.add_argument('--train_mul', type=int, default=1)
+parser.add_argument('--valid_users', type=int, default=10)
+parser.add_argument('--valid_ep', type=int, default=5)
+parser.add_argument('--cpu', type=int, default=4)
+
 parser.add_argument('--load_ckpt', type=bool, default=False)
 parser.add_argument('--load_model', type=str, default="mlp_f64_o32-pte_256x2-tr_it1024_b128")
 parser.add_argument('--load_session', type=str, default="0208_012206")
@@ -44,6 +52,14 @@ cfg["amortizer"]["encoder"]["mlp"]["out_sz"] = args.mlp_out
 cfg["amortizer"]["invertible"]["block"]["feat_sz"] = args.inn_block_feat
 cfg["amortizer"]["linear"]["hidden_sz"] = args.pte_hid_sz
 cfg["amortizer"]["linear"]["hidden_depth"] = args.pte_hid_depth
+cfg["dataset"] = dict(
+    train_n_ep=args.n_ep,
+    train_total_param=2**args.train_exp * args.train_mul,
+    train_num_cpu=args.cpu,
+    valid_total_user=args.valid_users,
+    valid_trial_per_cond=args.valid_ep,
+    valid_num_cpu=args.cpu,
+)
 
 
 name = f"mlp_f{args.mlp_feat}_o{args.mlp_out}"

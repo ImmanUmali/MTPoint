@@ -46,8 +46,24 @@ class Trainer(ABC):
         self.simulator = Simulator(config=self.config["simulator"])
 
         self.user_dataset = UserDataset()
-        self.valid_dataset = ValidDataset(sim_config=self.config["simulator"])
-        self.train_dataset = TrainDataset(sim_config=self.config["simulator"])
+        dataset_config = self.config.get("dataset", {})
+        self.valid_dataset = ValidDataset(
+            total_user=dataset_config.get("valid_total_user", 100),
+            trial_per_cond=dataset_config.get("valid_trial_per_cond", 50),
+            sim_config=self.config["simulator"],
+        )
+        self.train_dataset = TrainDataset(
+            n_ep=dataset_config.get("train_n_ep", 50),
+            sim_config=self.config["simulator"],
+        )
+        if not hasattr(self.train_dataset, "dataset"):
+            total_param = dataset_config.get("train_total_param", 2**23)
+            self.train_dataset._generate_dataset(
+                total_param=total_param,
+                save_param=total_param,
+                num_cpu=dataset_config.get("train_num_cpu", 12),
+            )
+            self.train_dataset._get_dataset()
 
         self.targeted_params = self.config["simulator"]["targeted_params"]
         self.targeted_stat = self.config["simulator"]["targeted_y"]

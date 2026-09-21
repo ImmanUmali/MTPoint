@@ -35,16 +35,21 @@ def list2str(s, sep=','):
 def pickle_save(file, data, try_multiple_save=100):
     if not file.endswith('.pkl'):
         file += '.pkl'
+    parent = os.path.dirname(file)
+    if parent:
+        os.makedirs(parent, exist_ok=True)
     if try_multiple_save <= 0: try_multiple_save = 1
+    last_error = None
     for _ in range(try_multiple_save):
         try:
             with open(file, "wb") as fp:
                 pickle.dump(data, fp)
             return
-        except:
+        except Exception as error:
+            last_error = error
             time.sleep(0.5)
             continue
-    raise ValueError("Save failed. Check file directory.")
+    raise ValueError(f"Save failed for {file}: {last_error}") from last_error
 
         
 
